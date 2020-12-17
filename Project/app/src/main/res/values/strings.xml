@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Capstone</string>
     <string name="title_activity_maps">Map</string>
+    <string name="permission_reason">This app need the geolocation permission for showing you the places that are close to you</string>
+    <string name="permission_dialog_title">Need of geolocation permission</string>
+    <string name="ok">Ok</string>
 </resources>
