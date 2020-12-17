@@ -38,6 +38,7 @@ captures/
 
 # IntelliJ
 *.iml
+Project/.idea/
 Project/.idea/workspace.xml
 Project/.idea/tasks.xml
 Project/.idea/gradle.xml
