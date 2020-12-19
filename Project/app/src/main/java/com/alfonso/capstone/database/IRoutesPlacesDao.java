@@ -1,5 +1,6 @@
 package com.alfonso.capstone.database;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
@@ -10,6 +11,11 @@ import com.alfonso.capstone.model.RouteWithPlaces;
 
 @Dao
 public interface IRoutesPlacesDao {
+
+    @Transaction
+    @Query("SELECT * FROM Route WHERE routeId =:routeId")
+    LiveData<RouteWithPlaces> getRouteWithPlaceLiveData(final long routeId);
+
 
     @Transaction
     @Query("SELECT * FROM Route WHERE routeId =:routeId")
