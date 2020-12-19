@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 
+import java.util.Objects;
+
 @Entity(primaryKeys = {"placeId","routeId"})
 public class RoutePlaceCrossRef {
     @ColumnInfo(name = "placeId")
@@ -14,6 +16,12 @@ public class RoutePlaceCrossRef {
 
     public RoutePlaceCrossRef() {
         placeId = "";
+    }
+
+    public RoutePlaceCrossRef(long routeId,String placeId) {
+        Objects.nonNull(placeId);
+        this.routeId = routeId;
+        this.placeId = placeId;
     }
 
     public String getPlaceId() {
