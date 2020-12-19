@@ -2,7 +2,6 @@ package com.alfonso.capstone;
 
 import android.content.Context;
 
-import androidx.room.Database;
 import androidx.room.Room;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -49,7 +48,7 @@ public class DataBaseInstrumentedTest {
 
     @Test
     public void insertPlace() {
-        dataBase.placeDao().insertPlate(makePlace());
+        dataBase.placeDao().insertPlace(makePlace());
         List<PlaceCapstone> aux = dataBase.placeDao().getAllPlaces();
         Assert.assertFalse(aux.isEmpty());
         Assert.assertEquals(PLACE_ID, aux.get(0).getId());
@@ -66,7 +65,7 @@ public class DataBaseInstrumentedTest {
     @Test
     public void insertCross() {
         dataBase.routeDao().insert(getRoute());
-        dataBase.placeDao().insertPlate(makePlace());
+        dataBase.placeDao().insertPlace(makePlace());
         List<Route> routes = dataBase.routeDao().getAllRoutes();
         RoutePlaceCrossRef routePlaceCrossRef = new RoutePlaceCrossRef();
         routePlaceCrossRef.setPlaceId(PLACE_ID);
@@ -75,5 +74,11 @@ public class DataBaseInstrumentedTest {
         RouteWithPlaces routeWithPlaces = dataBase.placesRoutesDao().getRouteWithPlace(routes.get(0).getIdRoute());
         Assert.assertEquals(routes.get(0).getIdRoute(),routeWithPlaces.getRoute().getIdRoute());
         Assert.assertFalse(routeWithPlaces.getPlaces().isEmpty());
+    }
+
+    @Test
+    public void getPlaceIdNonInDataBase() {
+        PlaceCapstone capstone = dataBase.placeDao().getPlaceById(PLACE_ID);
+        Assert.assertNull(capstone);
     }
 }
