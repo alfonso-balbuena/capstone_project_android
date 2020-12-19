@@ -17,6 +17,7 @@ import com.alfonso.capstone.databinding.ActivityMapsBinding;
 import com.alfonso.capstone.fragments.MapsLocationFragment;
 import com.alfonso.capstone.fragments.MyPlacesFragment;
 import com.alfonso.capstone.fragments.MyRoutesFragment;
+import com.google.android.libraries.places.api.Places;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.HashMap;
@@ -24,7 +25,7 @@ import java.util.Map;
 
 public class MapsActivity extends AppCompatActivity {
 
-    private final int CODE_RESULT_PERMISSION = 1;
+
     private ActivityMapsBinding binding;
     private Map<Integer,Fragment> fragmentMap;
     @Override
@@ -52,33 +53,5 @@ public class MapsActivity extends AppCompatActivity {
         transaction.replace(R.id.fragment_container,fragment);
         transaction.addToBackStack(null);
         transaction.commit();
-    }
-
-    private void permission() {
-        if(checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            //Use geolocation
-        } else {
-            requestPermissions(new String[] {Manifest.permission.ACCESS_FINE_LOCATION},CODE_RESULT_PERMISSION);
-        }
-    }
-
-
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == CODE_RESULT_PERMISSION) {
-            if(permissions.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-            } else {
-                AlertDialog alertDialog = new AlertDialog.Builder(this).setMessage(getString(R.string.permission_reason)).setTitle(getString(R.string.permission_dialog_title))
-                        .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                dialogInterface.cancel();
-                            }
-                        }).create();
-                alertDialog.show();
-            }
-        }
     }
 }
