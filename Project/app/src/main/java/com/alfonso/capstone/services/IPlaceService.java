@@ -9,5 +9,6 @@ import java.util.List;
 public interface IPlaceService {
     LiveData<List<PlaceCapstone>> getPlacesCurrentLocation();
     void updatePlaces();
-    void getPlaceById(String id);
+    LiveData<PlaceCapstone> getPlaceById(String id);
+
 }

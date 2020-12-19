@@ -68,10 +68,14 @@ public class PlaceServiceGoogle implements IPlaceService {
     }
 
     @Override
-    public void getPlaceById(String id) {
+    public LiveData<PlaceCapstone> getPlaceById(String id) {
+        MutableLiveData<PlaceCapstone> place = new MutableLiveData<>();
         FetchPlaceRequest request = FetchPlaceRequest.newInstance(id,typePlacesDetail);
+
         placesClient.fetchPlace(request).addOnSuccessListener(fetchPlaceResponse -> {
            Log.d("SERVICE",fetchPlaceResponse.getPlace().toString());
         });
+
+        return place;
     }
 }
