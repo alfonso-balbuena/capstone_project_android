@@ -10,6 +10,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.alfonso.capstone.R;
 import com.alfonso.capstone.model.PlaceCapstone;
+import com.alfonso.capstone.services.CallbackName;
 import com.alfonso.capstone.services.IPlaceService;
 import com.google.android.gms.tasks.Task;
 import com.google.android.libraries.places.api.Places;
@@ -20,6 +21,7 @@ import com.google.android.libraries.places.api.net.FindCurrentPlaceResponse;
 import com.google.android.libraries.places.api.net.PlacesClient;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -61,7 +63,7 @@ public class PlaceServiceGoogle implements IPlaceService {
                             .filter(placeLikelihood -> typePlacesFilter.stream().anyMatch(type -> Objects.requireNonNull(placeLikelihood.getPlace().getTypes()).contains(type)))
                             .map(placeLikelihood -> new PlaceCapstone(placeLikelihood.getPlace().getId(),placeLikelihood.getPlace().getName(),placeLikelihood.getPlace().getLatLng().latitude,placeLikelihood.getPlace().getLatLng().longitude))
                             .collect(Collectors.toList());
-                    places.setValue(p);
+                    places.postValue(p);
                 }
             });
         }
@@ -71,11 +73,18 @@ public class PlaceServiceGoogle implements IPlaceService {
     public LiveData<PlaceCapstone> getPlaceById(String id) {
         MutableLiveData<PlaceCapstone> place = new MutableLiveData<>();
         FetchPlaceRequest request = FetchPlaceRequest.newInstance(id,typePlacesDetail);
-
         placesClient.fetchPlace(request).addOnSuccessListener(fetchPlaceResponse -> {
            Log.d("SERVICE",fetchPlaceResponse.getPlace().toString());
         });
-
         return place;
+    }
+
+    @Override
+    public void getNamePlace(String id, CallbackName callbackName) {
+        List<Place.Field> nameField = Collections.singletonList(Place.Field.NAME);
+        FetchPlaceRequest request = FetchPlaceRequest.newInstance(id,nameField);
+        placesClient.fetchPlace(request).addOnSuccessListener(fetchPlaceResponse -> {
+           callbackName.getName(fetchPlaceResponse.getPlace().getName());
+        });
     }
 }
