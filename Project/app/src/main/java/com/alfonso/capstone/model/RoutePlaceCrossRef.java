@@ -3,6 +3,7 @@ package com.alfonso.capstone.model;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 
 import java.util.Objects;
 
@@ -18,6 +19,7 @@ public class RoutePlaceCrossRef {
         placeId = "";
     }
 
+    @Ignore
     public RoutePlaceCrossRef(long routeId,String placeId) {
         Objects.nonNull(placeId);
         this.routeId = routeId;
