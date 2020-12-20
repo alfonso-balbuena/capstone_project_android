@@ -1,22 +1,17 @@
 package com.alfonso.capstone.fragments;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.alfonso.capstone.R;
 import com.alfonso.capstone.databinding.FragmentAddRouteBinding;
-import com.google.android.material.theme.overlay.MaterialThemeOverlay;
 
 public class AddRouteFragment extends DialogFragment {
 
@@ -43,9 +38,7 @@ public class AddRouteFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentAddRouteBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
-        binding.okButton.setOnClickListener(view1 -> {
-            listener.onDialogOkClick(this,binding.edtRouteName.getText().toString());
-        });
+        binding.okButton.setOnClickListener(view1 -> listener.onDialogOkClick(this,binding.edtRouteName.getText().toString()));
         binding.cancelButton.setOnClickListener(view1 -> listener.onDialogCancelClick(this));
         return view;
     }
