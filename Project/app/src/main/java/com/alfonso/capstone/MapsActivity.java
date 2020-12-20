@@ -28,24 +28,35 @@ public class MapsActivity extends AppCompatActivity {
 
     private ActivityMapsBinding binding;
     private Map<Integer,Fragment> fragmentMap;
+    private Map<Integer,String> titles;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityMapsBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
-        fragmentMap = new HashMap<>();
-        fragmentMap.put(R.id.home,new MapsLocationFragment());
-        fragmentMap.put(R.id.places,new MyPlacesFragment());
-        fragmentMap.put(R.id.routes, new MyRoutesFragment());
+        initMaps();
         binding.bottomNavigation.setOnNavigationItemSelectedListener(item -> {
             if(fragmentMap.containsKey(item.getItemId())) {
+                setTitle(titles.get(item.getItemId()));
                 changePageFragment(fragmentMap.get(item.getItemId()));
                 return true;
             }
             return false;
         });
-        changePageFragment(new MapsLocationFragment());
+        setTitle(titles.get(R.id.home));
+        changePageFragment(fragmentMap.get(R.id.home));
+    }
+
+    public void initMaps() {
+        fragmentMap = new HashMap<>();
+        fragmentMap.put(R.id.home,new MapsLocationFragment());
+        fragmentMap.put(R.id.places,new MyPlacesFragment());
+        fragmentMap.put(R.id.routes, new MyRoutesFragment());
+        titles = new HashMap<>();
+        titles.put(R.id.home,getString(R.string.home));
+        titles.put(R.id.routes,getString(R.string.my_routes));
+        titles.put(R.id.places,getString(R.string.my_places));
     }
 
     private void changePageFragment(Fragment fragment) {
