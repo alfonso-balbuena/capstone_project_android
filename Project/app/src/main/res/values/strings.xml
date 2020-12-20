@@ -3,7 +3,7 @@
     <string name="title_activity_maps">Map</string>
     <string name="permission_reason">This app need the geolocation permission for showing you the places that are close to you</string>
     <string name="permission_dialog_title">Need of geolocation permission</string>
-    <string name="ok">Ok</string>
+    <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
     <string name="home">Home</string>
     <string name="my_routes">My routes</string>
@@ -11,6 +11,13 @@
     <string name="add_route">Add route</string>
     <string name="no_routes">There are no routes</string>
     <string name="route_name">Route name</string>
+    <string name="attribution">Google attribution</string>
+    <string name="address">Address:</string>
+    <string name="mock_detail_name">Mexico City Metropolitan Cathedral</string>
+    <string name="mock_address">Plaza de la Constitución S/N, Centro Histórico de la Cdad. de México, Centro, Cuauhtémoc, 06000 Ciudad de México, CDMX, Mexico,</string>
+    <string name="add">Add to route</string>
+    <string name="phone">Phone:</string>
+    <string name="mock_phone">5533441122</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
