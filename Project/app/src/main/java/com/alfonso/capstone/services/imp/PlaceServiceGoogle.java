@@ -42,7 +42,7 @@ public class PlaceServiceGoogle implements IPlaceService {
         placesClient = Places.createClient(context);
         typePlacesFilter = Arrays.asList(Place.Type.AIRPORT,Place.Type.AIRPORT,Place.Type.AQUARIUM,Place.Type.ART_GALLERY,Place.Type.CHURCH,Place.Type.HINDU_TEMPLE,Place.Type.ZOO,Place.Type.TOURIST_ATTRACTION,Place.Type.STADIUM,Place.Type.MUSEUM,Place.Type.MOVIE_THEATER);
         placeFields = Arrays.asList(Place.Field.NAME, Place.Field.ID, Place.Field.LAT_LNG, Place.Field.TYPES);
-        typePlacesDetail = Arrays.asList(Place.Field.ID,Place.Field.NAME,Place.Field.PHOTO_METADATAS,Place.Field.ADDRESS,Place.Field.RATING);
+        typePlacesDetail = Arrays.asList(Place.Field.ID,Place.Field.NAME,Place.Field.ADDRESS,Place.Field.RATING,Place.Field.PHONE_NUMBER,Place.Field.LAT_LNG,Place.Field.WEBSITE_URI);
     }
 
     @Override
@@ -74,7 +74,17 @@ public class PlaceServiceGoogle implements IPlaceService {
         MutableLiveData<PlaceCapstone> place = new MutableLiveData<>();
         FetchPlaceRequest request = FetchPlaceRequest.newInstance(id,typePlacesDetail);
         placesClient.fetchPlace(request).addOnSuccessListener(fetchPlaceResponse -> {
+            PlaceCapstone placeCapstone = new PlaceCapstone();
+            placeCapstone.setId(fetchPlaceResponse.getPlace().getId());
+            placeCapstone.setName(fetchPlaceResponse.getPlace().getName());
+            placeCapstone.setAddress(fetchPlaceResponse.getPlace().getAddress());
+            placeCapstone.setPhone(fetchPlaceResponse.getPlace().getPhoneNumber());
+            placeCapstone.setWebsite(fetchPlaceResponse.getPlace().getWebsiteUri());
+            placeCapstone.setRating(fetchPlaceResponse.getPlace().getRating());
+            placeCapstone.setLatitude(fetchPlaceResponse.getPlace().getLatLng().latitude);
+            placeCapstone.setLongitude(fetchPlaceResponse.getPlace().getLatLng().longitude);
            Log.d("SERVICE",fetchPlaceResponse.getPlace().toString());
+           place.postValue(placeCapstone);
         });
         return place;
     }
