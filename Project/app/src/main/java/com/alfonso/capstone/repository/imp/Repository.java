@@ -1,6 +1,10 @@
 package com.alfonso.capstone.repository.imp;
 
+import android.content.Context;
+
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import com.alfonso.capstone.database.RoutesDataBase;
 import com.alfonso.capstone.model.PlaceCapstone;
@@ -11,6 +15,7 @@ import com.alfonso.capstone.repository.IRepository;
 import com.alfonso.capstone.services.IPlaceService;
 
 import java.security.InvalidParameterException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.Executor;
@@ -19,6 +24,7 @@ public class Repository implements IRepository {
 
     private final RoutesDataBase dataBase;
     private final IPlaceService placeService;
+
 
     public Repository(RoutesDataBase dataBase, IPlaceService placeService) {
         this.dataBase = dataBase;
@@ -39,8 +45,17 @@ public class Repository implements IRepository {
     }
 
     @Override
-    public LiveData<List<PlaceCapstone>> getAllPlaces() {
-        return dataBase.placeDao().getAllPlacesLiveData();
+    public LiveData<List<PlaceCapstone>> getAllPlaces(LifecycleOwner owner) {
+        MutableLiveData<List<PlaceCapstone>> places = new MutableLiveData<>();
+        List<PlaceCapstone> data = new ArrayList<>();
+        dataBase.placeDao().getAllPlacesLiveData().observe(owner, placeCapstones -> {
+            placeCapstones.forEach(place ->  {
+                placeService.getNamePlace(place.getId(), place::setName);
+                data.add(place);
+            });
+            places.postValue(data);
+        });
+        return places;
     }
 
     @Override
@@ -57,10 +72,10 @@ public class Repository implements IRepository {
     @Override
     public void addPlaceToRoute(long idRoute, PlaceCapstone place) {
         Executor executor = new ThreadTaskExecutor();
-        RoutePlaceCrossRef routePlaceCrossRef = new RoutePlaceCrossRef(idRoute,place.getId());
+        RoutePlaceCrossRef routePlaceCrossRef = new RoutePlaceCrossRef(idRoute, place.getId());
         executor.execute(() -> {
             PlaceCapstone placeCapstone = dataBase.placeDao().getPlaceById(place.getId());
-            if(placeCapstone == null) {
+            if (placeCapstone == null) {
                 dataBase.placeDao().insertPlace(place);
             }
             dataBase.placesRoutesDao().insertPlaceRoute(routePlaceCrossRef);
