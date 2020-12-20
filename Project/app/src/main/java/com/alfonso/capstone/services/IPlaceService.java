@@ -10,5 +10,5 @@ public interface IPlaceService {
     LiveData<List<PlaceCapstone>> getPlacesCurrentLocation();
     void updatePlaces();
     LiveData<PlaceCapstone> getPlaceById(String id);
-
+    void getNamePlace(String id,CallbackName callbackName);
 }
