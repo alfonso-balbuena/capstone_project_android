@@ -18,6 +18,9 @@
     <string name="add">Add to route</string>
     <string name="phone">Phone:</string>
     <string name="mock_phone">5533441122</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="click_info">Click here for more information</string>
+    <string name="detail">Detail</string>
+    <string name="add_place">The place was added to the route</string>
+    <string name="success">Success</string>
+    <string name="title_activity_route">RouteActivity</string>
 </resources>
