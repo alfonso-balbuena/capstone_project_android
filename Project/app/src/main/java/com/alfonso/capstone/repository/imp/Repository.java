@@ -32,9 +32,20 @@ public class Repository implements IRepository {
     }
 
     public static class ThreadTaskExecutor implements Executor {
+        private Thread currentThread;
+
         @Override
         public void execute(Runnable runnable) {
-            new Thread(runnable).start();
+            currentThread = new Thread(runnable);
+            currentThread.start();
+        }
+
+        public void sleep() {
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -48,12 +59,16 @@ public class Repository implements IRepository {
     public LiveData<List<PlaceCapstone>> getAllPlaces(LifecycleOwner owner) {
         MutableLiveData<List<PlaceCapstone>> places = new MutableLiveData<>();
         List<PlaceCapstone> data = new ArrayList<>();
+        ThreadTaskExecutor executor = new ThreadTaskExecutor();
         dataBase.placeDao().getAllPlacesLiveData().observe(owner, placeCapstones -> {
-            placeCapstones.forEach(place ->  {
-                placeService.getNamePlace(place.getId(), place::setName);
-                data.add(place);
+            executor.execute(() -> {
+                placeCapstones.forEach(place ->  {
+                    placeService.getNamePlace(place.getId(), place::setName);
+                    data.add(place);
+                });
+                executor.sleep();
+                places.postValue(data);
             });
-            places.postValue(data);
         });
         return places;
     }
@@ -74,6 +89,9 @@ public class Repository implements IRepository {
         Executor executor = new ThreadTaskExecutor();
         RoutePlaceCrossRef routePlaceCrossRef = new RoutePlaceCrossRef(idRoute, place.getId());
         executor.execute(() -> {
+            RoutePlaceCrossRef crossRef = dataBase.placesRoutesDao().getCrossRef(place.getId(),idRoute);
+            if(crossRef != null)
+                return;;
             PlaceCapstone placeCapstone = dataBase.placeDao().getPlaceById(place.getId());
             if (placeCapstone == null) {
                 dataBase.placeDao().insertPlace(place);
@@ -84,7 +102,18 @@ public class Repository implements IRepository {
 
     @Override
     public LiveData<RouteWithPlaces> getRoute(long idRoute) {
-        return dataBase.placesRoutesDao().getRouteWithPlaceLiveData(idRoute);
+        MutableLiveData<RouteWithPlaces> route = new MutableLiveData<>();
+        ThreadTaskExecutor executor = new ThreadTaskExecutor();
+        executor.execute(() -> {
+            RouteWithPlaces routeWithPlaces = dataBase.placesRoutesDao().getRouteWithPlaceLiveData(idRoute);
+            routeWithPlaces.getPlaces().forEach(pc -> {
+                placeService.getNamePlace(pc.getId(),pc::setName);
+            });
+            executor.sleep();
+            route.postValue(routeWithPlaces);
+
+        });
+        return route;
     }
 
     @Override
