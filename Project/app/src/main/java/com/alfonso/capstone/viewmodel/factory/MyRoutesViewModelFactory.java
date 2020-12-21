@@ -1,4 +1,4 @@
-package com.alfonso.capstone.viewmodel;
+package com.alfonso.capstone.viewmodel.factory;
 
 import android.app.Application;
 
@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.alfonso.capstone.repository.IRepository;
+import com.alfonso.capstone.viewmodel.MyRoutesViewModel;
 
 public class MyRoutesViewModelFactory extends ViewModelProvider.NewInstanceFactory {
 
