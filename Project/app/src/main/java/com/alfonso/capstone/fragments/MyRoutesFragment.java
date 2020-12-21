@@ -18,6 +18,7 @@ import com.alfonso.capstone.adapter.GenericAdapter;
 import com.alfonso.capstone.databinding.FragmentMyRoutesBinding;
 import com.alfonso.capstone.model.Route;
 import com.alfonso.capstone.viewmodel.MyRoutesViewModel;
+import com.alfonso.capstone.viewmodel.SharedRouteViewModel;
 import com.alfonso.capstone.viewmodel.factory.ViewModelRepositoryFactory;
 
 public class MyRoutesFragment extends Fragment implements AddRouteFragment.AddRouteDialogListener {
@@ -28,7 +29,6 @@ public class MyRoutesFragment extends Fragment implements AddRouteFragment.AddRo
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         binding = FragmentMyRoutesBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
 
@@ -43,18 +43,15 @@ public class MyRoutesFragment extends Fragment implements AddRouteFragment.AddRo
     }
 
     private void initRV() {
+        SharedRouteViewModel sharedRouteViewModel = new ViewModelProvider(requireActivity()).get(SharedRouteViewModel.class);
         binding.rvRoutes.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         binding.rvRoutes.setLayoutManager(layoutManager);
         adapter = new GenericAdapter<>(model -> {
-           Intent intent = new Intent(requireActivity(), RouteActivity.class);
-           intent.putExtra(RouteActivity.NAME_ROUTE,model.getName());
-           intent.putExtra(RouteActivity.ID_ROUTE,model.getIdRoute());
-           startActivity(intent);
+            sharedRouteViewModel.selectRoute(model.getIdRoute(),model.getName());
         });
         binding.rvRoutes.setAdapter(adapter);
-
         viewModel.getAllRoutes().observe(this,routes -> {
             adapter.setList(routes);
         });

@@ -58,6 +58,7 @@ public class MapsLocationFragment extends Fragment {
     private boolean requestingLocationUpdates;
 
     private final GoogleMap.OnInfoWindowClickListener windowClickListener = marker -> {
+
         Intent intent = new Intent(requireActivity(), DetailPlace.class);
         intent.putExtra(DetailPlace.PLACE_ID, marker.getTag().toString());
         startActivity(intent);
