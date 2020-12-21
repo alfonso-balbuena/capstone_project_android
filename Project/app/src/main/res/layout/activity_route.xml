@@ -4,12 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.DetailPlace">
+    android:padding="@dimen/box_inset_layout_padding"
+    tools:context=".activities.RouteActivity"
+    tools:deviceIds="wear">
+
 
     <fragment
-        android:id="@+id/id_detail_place"
-        android:name="com.alfonso.capstone.fragments.DetailPlaceFragment"
+        android:id="@+id/route_places"
+        android:name="com.alfonso.capstone.fragments.RouteFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 
 </FrameLayout>

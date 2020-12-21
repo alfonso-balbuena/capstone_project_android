@@ -1,6 +1,10 @@
 package com.alfonso.capstone.repository.imp;
 
+import android.content.Context;
+
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import com.alfonso.capstone.database.RoutesDataBase;
 import com.alfonso.capstone.model.PlaceCapstone;
@@ -11,6 +15,7 @@ import com.alfonso.capstone.repository.IRepository;
 import com.alfonso.capstone.services.IPlaceService;
 
 import java.security.InvalidParameterException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.Executor;
@@ -20,15 +25,27 @@ public class Repository implements IRepository {
     private final RoutesDataBase dataBase;
     private final IPlaceService placeService;
 
+
     public Repository(RoutesDataBase dataBase, IPlaceService placeService) {
         this.dataBase = dataBase;
         this.placeService = placeService;
     }
 
     public static class ThreadTaskExecutor implements Executor {
+        private Thread currentThread;
+
         @Override
         public void execute(Runnable runnable) {
-            new Thread(runnable).start();
+            currentThread = new Thread(runnable);
+            currentThread.start();
+        }
+
+        public void sleep() {
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -39,8 +56,21 @@ public class Repository implements IRepository {
     }
 
     @Override
-    public LiveData<List<PlaceCapstone>> getAllPlaces() {
-        return dataBase.placeDao().getAllPlacesLiveData();
+    public LiveData<List<PlaceCapstone>> getAllPlaces(LifecycleOwner owner) {
+        MutableLiveData<List<PlaceCapstone>> places = new MutableLiveData<>();
+        List<PlaceCapstone> data = new ArrayList<>();
+        ThreadTaskExecutor executor = new ThreadTaskExecutor();
+        dataBase.placeDao().getAllPlacesLiveData().observe(owner, placeCapstones -> {
+            executor.execute(() -> {
+                placeCapstones.forEach(place ->  {
+                    placeService.getNamePlace(place.getId(), place::setName);
+                    data.add(place);
+                });
+                executor.sleep();
+                places.postValue(data);
+            });
+        });
+        return places;
     }
 
     @Override
@@ -57,10 +87,13 @@ public class Repository implements IRepository {
     @Override
     public void addPlaceToRoute(long idRoute, PlaceCapstone place) {
         Executor executor = new ThreadTaskExecutor();
-        RoutePlaceCrossRef routePlaceCrossRef = new RoutePlaceCrossRef(idRoute,place.getId());
+        RoutePlaceCrossRef routePlaceCrossRef = new RoutePlaceCrossRef(idRoute, place.getId());
         executor.execute(() -> {
+            RoutePlaceCrossRef crossRef = dataBase.placesRoutesDao().getCrossRef(place.getId(),idRoute);
+            if(crossRef != null)
+                return;;
             PlaceCapstone placeCapstone = dataBase.placeDao().getPlaceById(place.getId());
-            if(placeCapstone == null) {
+            if (placeCapstone == null) {
                 dataBase.placeDao().insertPlace(place);
             }
             dataBase.placesRoutesDao().insertPlaceRoute(routePlaceCrossRef);
@@ -69,7 +102,18 @@ public class Repository implements IRepository {
 
     @Override
     public LiveData<RouteWithPlaces> getRoute(long idRoute) {
-        return dataBase.placesRoutesDao().getRouteWithPlaceLiveData(idRoute);
+        MutableLiveData<RouteWithPlaces> route = new MutableLiveData<>();
+        ThreadTaskExecutor executor = new ThreadTaskExecutor();
+        executor.execute(() -> {
+            RouteWithPlaces routeWithPlaces = dataBase.placesRoutesDao().getRouteWithPlaceLiveData(idRoute);
+            routeWithPlaces.getPlaces().forEach(pc -> {
+                placeService.getNamePlace(pc.getId(),pc::setName);
+            });
+            executor.sleep();
+            route.postValue(routeWithPlaces);
+
+        });
+        return route;
     }
 
     @Override

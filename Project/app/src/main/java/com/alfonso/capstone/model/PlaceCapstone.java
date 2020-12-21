@@ -1,10 +1,14 @@
 package com.alfonso.capstone.model;
 
+import android.net.Uri;
+
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
+
+import com.google.android.libraries.places.api.model.Place;
 
 @Entity
 public class PlaceCapstone {
@@ -18,8 +22,18 @@ public class PlaceCapstone {
     private double longitude;
     @Ignore
     private String name;
+    @Ignore
+    private String address;
+    @Ignore
+    private Double rating;
+    @Ignore
+    private String phone;
+    @Ignore
+    private Uri website;
 
-    public PlaceCapstone(){}
+    public PlaceCapstone(){
+        id = "";
+    }
 
     public PlaceCapstone(String id,String name,double latitude,double longitude) {
         this.id = id;
@@ -63,6 +77,39 @@ public class PlaceCapstone {
     @NonNull
     @Override
     public String toString() {
-        return "Id=" + id + ",Name=" + name + ",Lat=" + latitude + ",Long=" + longitude;
+        return name;
+    }
+
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public Double getRating() {
+        return rating;
+    }
+
+    public void setRating(Double rating) {
+        this.rating = rating;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public Uri getWebsite() {
+        return website;
+    }
+
+    public void setWebsite(Uri website) {
+        this.website = website;
     }
 }

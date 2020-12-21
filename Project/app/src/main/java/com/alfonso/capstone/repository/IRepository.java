@@ -1,5 +1,6 @@
 package com.alfonso.capstone.repository;
 
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 
 import com.alfonso.capstone.model.PlaceCapstone;
@@ -11,7 +12,7 @@ import java.util.List;
 
 public interface IRepository {
     void insertPlace(PlaceCapstone placeCapstone);
-    LiveData<List<PlaceCapstone>> getAllPlaces();
+    LiveData<List<PlaceCapstone>> getAllPlaces(LifecycleOwner owner);
     void insertRoute(Route route);
     LiveData<List<Route>> getAllRoutes();
     void addPlaceToRoute(long idRoute, PlaceCapstone place);

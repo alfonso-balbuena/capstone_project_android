@@ -14,7 +14,7 @@ public interface IRoutesPlacesDao {
 
     @Transaction
     @Query("SELECT * FROM Route WHERE routeId =:routeId")
-    LiveData<RouteWithPlaces> getRouteWithPlaceLiveData(final long routeId);
+    RouteWithPlaces getRouteWithPlaceLiveData(final long routeId);
 
 
     @Transaction
@@ -24,4 +24,6 @@ public interface IRoutesPlacesDao {
     @Insert
     void insertPlaceRoute(RoutePlaceCrossRef routePlaceCrossRef);
 
+    @Query("SELECT * FROM RoutePlaceCrossRef WHERE placeId=:placeId AND routeId=:routeId")
+    RoutePlaceCrossRef getCrossRef(String placeId,long routeId);
 }
