@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.alfonso.capstone.CapstoneApplication;
 import com.alfonso.capstone.R;
 import com.alfonso.capstone.viewmodel.RouteViewModel;
-import com.alfonso.capstone.viewmodel.factory.RouteViewModelFactory;
+import com.alfonso.capstone.viewmodel.factory.ViewModelRepositoryFactory;
 
 public class RouteActivity extends AppCompatActivity {
 
@@ -18,7 +18,7 @@ public class RouteActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        RouteViewModel viewModel = new ViewModelProvider(this,new RouteViewModelFactory(((CapstoneApplication)getApplication()).repository)).get(RouteViewModel.class);
+        RouteViewModel viewModel = new ViewModelProvider(this,new ViewModelRepositoryFactory<RouteViewModel>(((CapstoneApplication)getApplication()).repository)).get(RouteViewModel.class);
         viewModel.setIdRoute(getIntent().getLongExtra(ID_ROUTE,1));
         setTitle(getIntent().getStringExtra(NAME_ROUTE));
         setContentView(R.layout.activity_route);

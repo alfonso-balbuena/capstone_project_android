@@ -12,15 +12,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.alfonso.capstone.CapstoneApplication;
-import com.alfonso.capstone.R;
 import com.alfonso.capstone.activities.DetailPlace;
 import com.alfonso.capstone.adapter.GenericAdapter;
 import com.alfonso.capstone.databinding.FragmentMyPlacesBinding;
 import com.alfonso.capstone.model.PlaceCapstone;
 import com.alfonso.capstone.viewmodel.MyPlacesViewModel;
-import com.alfonso.capstone.viewmodel.RouteViewModel;
-import com.alfonso.capstone.viewmodel.factory.MyPlacesViewModelFactory;
-import com.alfonso.capstone.viewmodel.factory.RouteViewModelFactory;
+import com.alfonso.capstone.viewmodel.factory.ViewModelRepositoryFactory;
 
 
 public class MyPlacesFragment extends Fragment {
@@ -33,7 +30,7 @@ public class MyPlacesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentMyPlacesBinding.inflate(inflater, container, false);
-        viewModel = new ViewModelProvider(requireActivity(),new MyPlacesViewModelFactory(((CapstoneApplication)requireActivity().getApplication()).repository)).get(MyPlacesViewModel.class);
+        viewModel = new ViewModelProvider(requireActivity(),new ViewModelRepositoryFactory<MyPlacesViewModel>(((CapstoneApplication)requireActivity().getApplication()).repository)).get(MyPlacesViewModel.class);
         initRV();
         return binding.getRoot();
     }
