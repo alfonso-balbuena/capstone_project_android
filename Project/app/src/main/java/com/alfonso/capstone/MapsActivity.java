@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.alfonso.capstone.databinding.ActivityMapsBinding;
+import com.alfonso.capstone.fragments.MainMyPlacesFragment;
 import com.alfonso.capstone.fragments.MainMyRoutesFragment;
 import com.alfonso.capstone.fragments.MapsLocationFragment;
 import com.alfonso.capstone.fragments.MyPlacesFragment;
@@ -48,7 +49,7 @@ public class MapsActivity extends AppCompatActivity {
     public void initMaps() {
         fragmentMap = new HashMap<>();
         fragmentMap.put(R.id.home,new MapsLocationFragment());
-        fragmentMap.put(R.id.places,new MyPlacesFragment());
+        fragmentMap.put(R.id.places,new MainMyPlacesFragment());
         fragmentMap.put(R.id.routes, new MainMyRoutesFragment());
         titles = new HashMap<>();
         titles.put(R.id.home,getString(R.string.home));

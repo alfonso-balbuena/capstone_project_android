@@ -17,6 +17,7 @@ import com.alfonso.capstone.adapter.GenericAdapter;
 import com.alfonso.capstone.databinding.FragmentMyPlacesBinding;
 import com.alfonso.capstone.model.PlaceCapstone;
 import com.alfonso.capstone.viewmodel.MyPlacesViewModel;
+import com.alfonso.capstone.viewmodel.SharePlaceViewModel;
 import com.alfonso.capstone.viewmodel.factory.ViewModelRepositoryFactory;
 
 
@@ -41,9 +42,8 @@ public class MyPlacesFragment extends Fragment {
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         binding.rvMyPlaces.setLayoutManager(layoutManager);
         adapter = new GenericAdapter<>(model -> {
-            Intent intent = new Intent(requireActivity(), DetailPlace.class);
-            intent.putExtra(DetailPlace.PLACE_ID,model.getId());
-            startActivity(intent);
+            SharePlaceViewModel sharePlaceViewModel = new ViewModelProvider(requireActivity()).get(SharePlaceViewModel.class);
+            sharePlaceViewModel.setPlaceId(model.getId());
         });
         viewModel.getPlaces(this).observe(this,placeCapstones -> {
             adapter.setList(placeCapstones);

@@ -104,8 +104,10 @@ public class MapsLocationFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        locationProviderClient.removeLocationUpdates(locationCallback);
-        requestingLocationUpdates = false;
+        if(locationProviderClient != null && locationCallback != null) {
+            locationProviderClient.removeLocationUpdates(locationCallback);
+            requestingLocationUpdates = false;
+        }
     }
 
     private void initUpdatesCurrentLocation() {
