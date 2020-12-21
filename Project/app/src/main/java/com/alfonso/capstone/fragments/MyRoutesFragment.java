@@ -1,12 +1,12 @@
 package com.alfonso.capstone.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,20 +14,19 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.alfonso.capstone.CapstoneApplication;
-import com.alfonso.capstone.R;
+import com.alfonso.capstone.activities.RouteActivity;
+import com.alfonso.capstone.adapter.GenericAdapter;
 import com.alfonso.capstone.adapter.RoutesAdapter;
-import com.alfonso.capstone.databinding.FragmentMapsLocationBinding;
 import com.alfonso.capstone.databinding.FragmentMyRoutesBinding;
-import com.alfonso.capstone.services.imp.PlaceServiceGoogle;
+import com.alfonso.capstone.model.Route;
 import com.alfonso.capstone.viewmodel.MyRoutesViewModel;
-import com.alfonso.capstone.viewmodel.MyRoutesViewModelFactory;
-import com.google.android.gms.location.LocationServices;
+import com.alfonso.capstone.viewmodel.factory.MyRoutesViewModelFactory;
 
 public class MyRoutesFragment extends Fragment implements AddRouteFragment.AddRouteDialogListener {
 
     private FragmentMyRoutesBinding binding;
     private MyRoutesViewModel viewModel;
-    private RoutesAdapter adapter;
+    private GenericAdapter<Route> adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -48,13 +47,16 @@ public class MyRoutesFragment extends Fragment implements AddRouteFragment.AddRo
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         binding.rvRoutes.setLayoutManager(layoutManager);
-        adapter = new RoutesAdapter(model -> {
-           Log.d("ROUTEs", "Click en " + model.getIdRoute() + "  --- " + model.getName());
+        adapter = new GenericAdapter<>(model -> {
+           Intent intent = new Intent(requireActivity(), RouteActivity.class);
+           intent.putExtra(RouteActivity.NAME_ROUTE,model.getName());
+           intent.putExtra(RouteActivity.ID_ROUTE,model.getIdRoute());
+           startActivity(intent);
         });
         binding.rvRoutes.setAdapter(adapter);
 
         viewModel.getAllRoutes().observe(this,routes -> {
-            adapter.setRouteList(routes);
+            adapter.setList(routes);
         });
     }
 

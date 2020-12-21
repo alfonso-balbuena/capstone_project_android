@@ -20,6 +20,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@+id/guideline"
         app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="10dp"
         app:layout_constraintTop_toBottomOf="@+id/map_detail" />
 
     <TextView
@@ -29,6 +30,7 @@
         android:layout_marginStart="2dp"
         android:layout_marginTop="4dp"
         android:textSize="17sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/rating_place_detail"
         app:layout_constraintEnd_toStartOf="@+id/rating_place_detail"
         app:layout_constraintStart_toStartOf="parent"
@@ -61,6 +63,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="3dp"
         android:layout_marginEnd="2dp"
+        android:layout_marginTop="5dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView2"
         app:layout_constraintTop_toTopOf="@+id/guideline"
@@ -91,12 +94,13 @@
         android:id="@+id/spinner_routes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@+id/materialButton"
+        android:layout_marginStart="5dp"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_add_to_route"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/materialButton" />
+        app:layout_constraintTop_toTopOf="@+id/btn_add_to_route" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/materialButton"
+        android:id="@+id/btn_add_to_route"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/add_route"
@@ -109,6 +113,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_end="280dp" />
+        app:layout_constraintGuide_end="258dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -77,8 +77,9 @@ public class PlaceCapstone {
     @NonNull
     @Override
     public String toString() {
-        return "Id=" + id + ",Name=" + name + ",Lat=" + latitude + ",Long=" + longitude;
+        return name;
     }
+
 
     public String getAddress() {
         return address;

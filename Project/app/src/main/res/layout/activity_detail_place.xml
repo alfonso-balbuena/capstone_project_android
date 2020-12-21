@@ -7,6 +7,7 @@
     tools:context=".activities.DetailPlace">
 
     <fragment
+        android:id="@+id/id_detail_place"
         android:name="com.alfonso.capstone.fragments.DetailPlaceFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

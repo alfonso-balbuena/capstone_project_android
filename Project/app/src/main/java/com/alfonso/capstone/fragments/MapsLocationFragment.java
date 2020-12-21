@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 
 import android.Manifest;
 
+import android.content.Intent;
 import android.content.pm.PackageManager;
 
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import android.view.ViewGroup;
 
 import com.alfonso.capstone.R;
 
+import com.alfonso.capstone.activities.DetailPlace;
 import com.alfonso.capstone.databinding.FragmentMapsLocationBinding;
 
 import com.alfonso.capstone.model.PlaceCapstone;
@@ -43,7 +45,9 @@ public class MapsLocationFragment extends Fragment {
     private PlaceServiceGoogle placeServiceGoogle;
 
     private final GoogleMap.OnInfoWindowClickListener windowClickListener = marker -> {
-
+        Intent intent = new Intent(requireActivity(), DetailPlace.class);
+        intent.putExtra(DetailPlace.PLACE_ID,marker.getTag().toString());
+        startActivity(intent);
     };
 
     private final OnMapReadyCallback callback = new OnMapReadyCallback() {
@@ -66,14 +70,12 @@ public class MapsLocationFragment extends Fragment {
         locationProviderClient = LocationServices.getFusedLocationProviderClient(getContext());
         placeServiceGoogle = new PlaceServiceGoogle(getContext());
         placeServiceGoogle.getPlacesCurrentLocation().observe(this, this::addMarkers);
-        placeServiceGoogle.getPlaceById("ChIJ4a8nxjL50YURJ19RJ_A9T5E");
         return view;
     }
 
     private void addMarkers(List<PlaceCapstone> places) {
         places.forEach(placeCapstone -> {
-            Log.d("DATA",placeCapstone.toString());
-            map_.addMarker(new MarkerOptions().position(new LatLng(placeCapstone.getLatitude(),placeCapstone.getLongitude())).title(placeCapstone.getName()));
+            map_.addMarker(new MarkerOptions().position(new LatLng(placeCapstone.getLatitude(),placeCapstone.getLongitude())).title(placeCapstone.getName()).snippet(getString(R.string.click_info))).setTag(placeCapstone.getId());
         });
     }
 
