@@ -20,7 +20,7 @@ import com.alfonso.capstone.databinding.FragmentDetailPlaceBinding;
 import com.alfonso.capstone.model.PlaceCapstone;
 import com.alfonso.capstone.model.Route;
 import com.alfonso.capstone.viewmodel.DetailPlaceViewModel;
-import com.alfonso.capstone.viewmodel.factory.DetailPlaceViewModelFactory;
+import com.alfonso.capstone.viewmodel.factory.ViewModelRepositoryFactory;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -45,7 +45,7 @@ public class DetailPlaceFragment extends Fragment implements OnMapReadyCallback,
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentDetailPlaceBinding.inflate(inflater, container, false);
-        viewModel = new ViewModelProvider(requireActivity(),new DetailPlaceViewModelFactory(((CapstoneApplication)requireActivity().getApplication()).repository)).get(DetailPlaceViewModel.class);
+        viewModel = new ViewModelProvider(requireActivity(),new ViewModelRepositoryFactory<DetailPlaceViewModel>(((CapstoneApplication)requireActivity().getApplication()).repository)).get(DetailPlaceViewModel.class);
         init();
 
         binding.btnAddToRoute.setOnClickListener(view -> {
@@ -56,7 +56,6 @@ public class DetailPlaceFragment extends Fragment implements OnMapReadyCallback,
                 alertDialog.show();
             }
         });
-
         return binding.getRoot();
     }
 

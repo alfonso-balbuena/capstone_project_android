@@ -7,20 +7,17 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.alfonso.capstone.CapstoneApplication;
-import com.alfonso.capstone.R;
 import com.alfonso.capstone.activities.DetailPlace;
 import com.alfonso.capstone.adapter.GenericAdapter;
 import com.alfonso.capstone.databinding.FragmentRouteBinding;
 import com.alfonso.capstone.model.PlaceCapstone;
-import com.alfonso.capstone.model.Route;
 import com.alfonso.capstone.viewmodel.RouteViewModel;
-import com.alfonso.capstone.viewmodel.factory.RouteViewModelFactory;
+import com.alfonso.capstone.viewmodel.factory.ViewModelRepositoryFactory;
 
 public class RouteFragment extends Fragment {
 
@@ -32,7 +29,7 @@ public class RouteFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         binding = FragmentRouteBinding.inflate(inflater, container, false);
-        RouteViewModel viewModel = new ViewModelProvider(requireActivity(),new RouteViewModelFactory(((CapstoneApplication)requireActivity().getApplication()).repository)).get(RouteViewModel.class);
+        RouteViewModel viewModel = new ViewModelProvider(requireActivity(),new ViewModelRepositoryFactory<RouteViewModel>(((CapstoneApplication)requireActivity().getApplication()).repository)).get(RouteViewModel.class);
         viewModel.getIdRoute().observe(this,aLong -> {
             viewModel.getPlacesForId().observe(this, routeWithPlaces -> {
                 binding.rvRoutePlaces.setHasFixedSize(true);
