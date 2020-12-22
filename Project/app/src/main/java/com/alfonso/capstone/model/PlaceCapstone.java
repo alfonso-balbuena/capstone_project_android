@@ -8,7 +8,10 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import com.google.android.libraries.places.api.model.PhotoMetadata;
 import com.google.android.libraries.places.api.model.Place;
+
+import java.util.List;
 
 @Entity
 public class PlaceCapstone {
@@ -30,12 +33,15 @@ public class PlaceCapstone {
     private String phone;
     @Ignore
     private Uri website;
+    @Ignore
+    private List<PhotoMetadata> photoMetadataList;
 
-    public PlaceCapstone(){
+
+    public PlaceCapstone() {
         id = "";
     }
 
-    public PlaceCapstone(String id,String name,double latitude,double longitude) {
+    public PlaceCapstone(String id, String name, double latitude, double longitude) {
         this.id = id;
         this.name = name;
         this.latitude = latitude;
@@ -111,5 +117,13 @@ public class PlaceCapstone {
 
     public void setWebsite(Uri website) {
         this.website = website;
+    }
+
+    public List<PhotoMetadata> getPhotoMetadataList() {
+        return photoMetadataList;
+    }
+
+    public void setPhotoMetadataList(List<PhotoMetadata> photoMetadataList) {
+        this.photoMetadataList = photoMetadataList;
     }
 }

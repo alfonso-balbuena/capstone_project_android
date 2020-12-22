@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 
 import com.alfonso.capstone.CapstoneApplication;
 import com.alfonso.capstone.R;
@@ -27,6 +28,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.squareup.picasso.Picasso;
 
 public class DetailPlaceFragment extends Fragment implements OnMapReadyCallback, AdapterView.OnItemSelectedListener {
 
@@ -83,6 +85,14 @@ public class DetailPlaceFragment extends Fragment implements OnMapReadyCallback,
                 binding.phoneDetail.setText(placeCapstone.getPhone());
                 binding.ratingPlaceDetail.setRating(placeCapstone.getRating().floatValue());
                 binding.addresDetail.setText(placeCapstone.getAddress());
+                viewModel.getPhotos(placeCapstone.getPhotoMetadataList()).observe(this, bitmaps -> {
+                    if(bitmaps.size() > 0) {
+                        binding.photoPlace.setScaleType(ImageView.ScaleType.FIT_XY);
+                        binding.photoPlace.setImageBitmap(bitmaps.get(0));
+                        binding.attributionPhoto.setText(placeCapstone.getPhotoMetadataList().get(0).getAttributions());
+                    }
+                });
+
                 placeDetail = placeCapstone;
 
                 if(map_ != null) {

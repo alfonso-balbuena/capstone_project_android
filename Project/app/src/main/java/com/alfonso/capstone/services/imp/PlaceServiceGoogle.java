@@ -3,6 +3,7 @@ package com.alfonso.capstone.services.imp;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
@@ -15,7 +16,9 @@ import com.alfonso.capstone.services.IPlaceService;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.PhotoMetadata;
 import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.net.FetchPhotoRequest;
 import com.google.android.libraries.places.api.net.FetchPlaceRequest;
 import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest;
 import com.google.android.libraries.places.api.net.FindCurrentPlaceResponse;
@@ -44,7 +47,7 @@ public class PlaceServiceGoogle implements IPlaceService {
         placesClient = Places.createClient(context);
         typePlacesFilter = Arrays.asList(Place.Type.AIRPORT,Place.Type.AIRPORT,Place.Type.AQUARIUM,Place.Type.ART_GALLERY,Place.Type.CHURCH,Place.Type.HINDU_TEMPLE,Place.Type.ZOO,Place.Type.TOURIST_ATTRACTION,Place.Type.STADIUM,Place.Type.MUSEUM,Place.Type.MOVIE_THEATER);
         placeFields = Arrays.asList(Place.Field.NAME, Place.Field.ID, Place.Field.LAT_LNG, Place.Field.TYPES);
-        typePlacesDetail = Arrays.asList(Place.Field.ID,Place.Field.NAME,Place.Field.ADDRESS,Place.Field.RATING,Place.Field.PHONE_NUMBER,Place.Field.LAT_LNG,Place.Field.WEBSITE_URI);
+        typePlacesDetail = Arrays.asList(Place.Field.ID,Place.Field.NAME,Place.Field.ADDRESS,Place.Field.RATING,Place.Field.PHONE_NUMBER,Place.Field.LAT_LNG,Place.Field.WEBSITE_URI,Place.Field.PHOTO_METADATAS);
     }
 
     @Override
@@ -85,6 +88,7 @@ public class PlaceServiceGoogle implements IPlaceService {
             placeCapstone.setRating(fetchPlaceResponse.getPlace().getRating());
             placeCapstone.setLatitude(fetchPlaceResponse.getPlace().getLatLng().latitude);
             placeCapstone.setLongitude(fetchPlaceResponse.getPlace().getLatLng().longitude);
+            placeCapstone.setPhotoMetadataList(fetchPlaceResponse.getPlace().getPhotoMetadatas());
            Log.d("SERVICE",fetchPlaceResponse.getPlace().toString());
            place.postValue(placeCapstone);
         });
@@ -101,8 +105,20 @@ public class PlaceServiceGoogle implements IPlaceService {
             e.printStackTrace();
         }
         return "";
-        /*placesClient.fetchPlace(request).addOnSuccessListener(fetchPlaceResponse -> {
-           callbackName.getName(fetchPlaceResponse.getPlace().getName());
-        });*/
+
+    }
+
+    @Override
+    public Bitmap getPhoto(PhotoMetadata metadata){
+        FetchPhotoRequest photoRequest = FetchPhotoRequest.builder(metadata)
+                .setMaxWidth(500)
+                .setMaxHeight(400)
+                .build();
+        try {
+            return Tasks.await(placesClient.fetchPhoto(photoRequest)).getBitmap();
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

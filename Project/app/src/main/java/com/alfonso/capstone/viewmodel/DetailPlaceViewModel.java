@@ -1,5 +1,7 @@
 package com.alfonso.capstone.viewmodel;
 
+import android.graphics.Bitmap;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -7,6 +9,7 @@ import androidx.lifecycle.ViewModel;
 import com.alfonso.capstone.model.PlaceCapstone;
 import com.alfonso.capstone.model.Route;
 import com.alfonso.capstone.repository.IRepository;
+import com.google.android.libraries.places.api.model.PhotoMetadata;
 
 import java.util.List;
 
@@ -38,5 +41,9 @@ public class DetailPlaceViewModel extends ViewModel {
 
     public void setIdPlace(String idPlace) {
         this.idPlace.setValue(idPlace);
+    }
+
+    public LiveData<List<Bitmap>> getPhotos(List<PhotoMetadata> data) {
+        return repository.getPhotos(data);
     }
 }

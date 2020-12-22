@@ -1,6 +1,7 @@
 package com.alfonso.capstone.repository.imp;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
@@ -13,6 +14,7 @@ import com.alfonso.capstone.model.RoutePlaceCrossRef;
 import com.alfonso.capstone.model.RouteWithPlaces;
 import com.alfonso.capstone.repository.IRepository;
 import com.alfonso.capstone.services.IPlaceService;
+import com.google.android.libraries.places.api.model.PhotoMetadata;
 
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
@@ -127,5 +129,22 @@ public class Repository implements IRepository {
     public LiveData<PlaceCapstone> getPlaceDetail(String id) {
         Objects.nonNull(id);
         return placeService.getPlaceById(id);
+    }
+
+    @Override
+    public LiveData<List<Bitmap>> getPhotos(List<PhotoMetadata> metadata) {
+        MutableLiveData<List<Bitmap>> photosList = new MutableLiveData<>();
+        List<Bitmap> images = new ArrayList<>();
+        Executor executor = new ThreadTaskExecutor();
+        executor.execute(() -> {
+            metadata.forEach(mData -> {
+                Bitmap img = placeService.getPhoto(mData);
+                if(img != null) {
+                    images.add(img);
+                }
+            });
+            photosList.postValue(images);
+        });
+        return photosList;
     }
 }
