@@ -1,11 +1,11 @@
 package com.alfonso.capstone.repository.imp;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.room.RoomDatabase;
 
 import com.alfonso.capstone.database.RoutesDataBase;
 import com.alfonso.capstone.model.PlaceCapstone;
@@ -16,11 +16,12 @@ import com.alfonso.capstone.repository.IRepository;
 import com.alfonso.capstone.services.IPlaceService;
 import com.google.android.libraries.places.api.model.PhotoMetadata;
 
-import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.Executor;
+
+import timber.log.Timber;
 
 public class Repository implements IRepository {
 
@@ -34,26 +35,18 @@ public class Repository implements IRepository {
     }
 
     public static class ThreadTaskExecutor implements Executor {
-        private Thread currentThread;
 
         @Override
         public void execute(Runnable runnable) {
-            currentThread = new Thread(runnable);
+            Thread currentThread = new Thread(runnable);
             currentThread.start();
-        }
-
-        public void sleep() {
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
         }
     }
 
     @Override
     public void insertPlace(PlaceCapstone placeCapstone) {
         Executor executor = new ThreadTaskExecutor();
+        Timber.d("Inserting place");
         executor.execute(() -> dataBase.placeDao().insertPlace(placeCapstone));
     }
 
@@ -68,6 +61,7 @@ public class Repository implements IRepository {
                     place.setName(placeService.getNamePlace(place.getId()));
                     data.add(place);
                 });
+                Timber.d("Getting places from database...");
                 places.postValue(data);
             });
         });
@@ -77,11 +71,13 @@ public class Repository implements IRepository {
     @Override
     public void insertRoute(Route route) {
         Executor executor = new ThreadTaskExecutor();
+        Timber.d("Inserting route " + route.getName() + " in the database");
         executor.execute(() -> dataBase.routeDao().insert(route));
     }
 
     @Override
     public LiveData<List<Route>> getAllRoutes() {
+        Timber.d("Getting all the routes in the database");
         return dataBase.routeDao().getAllRoutesLiveData();
     }
 
@@ -97,6 +93,7 @@ public class Repository implements IRepository {
             if (placeCapstone == null) {
                 dataBase.placeDao().insertPlace(place);
             }
+            Timber.d("Inserting a relationship between route " + idRoute + " and place " + place.getName());
             dataBase.placesRoutesDao().insertPlaceRoute(routePlaceCrossRef);
         });
     }
@@ -110,6 +107,7 @@ public class Repository implements IRepository {
             routeWithPlaces.getPlaces().forEach(pc -> {
                 pc.setName(placeService.getNamePlace(pc.getId()));
             });
+            Timber.d("Getting the route with all the places that has relation");
             route.postValue(routeWithPlaces);
         });
         return route;
@@ -117,17 +115,20 @@ public class Repository implements IRepository {
 
     @Override
     public LiveData<List<PlaceCapstone>> getPlaceCurrentPosition() {
+        Timber.d("Getting the places of the current location...");
         return placeService.getPlacesCurrentLocation();
     }
 
     @Override
     public void updatePlacesCurrentPosition() {
+        Timber.d("Updating the current location and the places...");
         placeService.updatePlaces();
     }
 
     @Override
     public LiveData<PlaceCapstone> getPlaceDetail(String id) {
         Objects.nonNull(id);
+        Timber.d("Getting the detail of the place %s",id);
         return placeService.getPlaceById(id);
     }
 
@@ -143,6 +144,7 @@ public class Repository implements IRepository {
                     images.add(img);
                 }
             });
+            Timber.d("Getting the photos of a place...");
             photosList.postValue(images);
         });
         return photosList;

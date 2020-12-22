@@ -22,6 +22,8 @@ import com.alfonso.capstone.viewmodel.MyRoutesViewModel;
 import com.alfonso.capstone.viewmodel.SharedRouteViewModel;
 import com.alfonso.capstone.viewmodel.factory.ViewModelRepositoryFactory;
 
+import timber.log.Timber;
+
 public class MyRoutesFragment extends Fragment implements AddRouteFragment.AddRouteDialogListener {
 
     private FragmentMyRoutesBinding binding;
@@ -50,7 +52,7 @@ public class MyRoutesFragment extends Fragment implements AddRouteFragment.AddRo
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         binding.rvRoutes.setLayoutManager(layoutManager);
         adapter = new GenericAdapter<>(model -> {
-            Log.d("MYROUTES","Click " + model.getName());
+            Timber.d("Click in route %s", model.getName());
             sharedRouteViewModel.selectRoute(model.getIdRoute(),model.getName());
         });
         binding.rvRoutes.setAdapter(adapter);

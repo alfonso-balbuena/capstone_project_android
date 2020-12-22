@@ -31,6 +31,8 @@ import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
+import timber.log.Timber;
+
 public class PlaceServiceGoogle implements IPlaceService {
 
     private final Context context;
@@ -63,6 +65,7 @@ public class PlaceServiceGoogle implements IPlaceService {
             Task<FindCurrentPlaceResponse> placeResponseTask = placesClient.findCurrentPlace(request);
             placeResponseTask.addOnCompleteListener(task -> {
                 if(task.isSuccessful()) {
+                    Timber.d("Updating places");
                     FindCurrentPlaceResponse response = task.getResult();
                     List<PlaceCapstone> p = response.getPlaceLikelihoods().stream()
                             .filter(placeLikelihood -> typePlacesFilter.stream().anyMatch(type -> Objects.requireNonNull(placeLikelihood.getPlace().getTypes()).contains(type)))
@@ -79,6 +82,7 @@ public class PlaceServiceGoogle implements IPlaceService {
         MutableLiveData<PlaceCapstone> place = new MutableLiveData<>();
         FetchPlaceRequest request = FetchPlaceRequest.newInstance(id,typePlacesDetail);
         placesClient.fetchPlace(request).addOnSuccessListener(fetchPlaceResponse -> {
+            Timber.d("Getting place id %s", id);
             PlaceCapstone placeCapstone = new PlaceCapstone();
             placeCapstone.setId(fetchPlaceResponse.getPlace().getId());
             placeCapstone.setName(fetchPlaceResponse.getPlace().getName());
@@ -100,6 +104,7 @@ public class PlaceServiceGoogle implements IPlaceService {
         List<Place.Field> nameField = Collections.singletonList(Place.Field.NAME);
         FetchPlaceRequest request = FetchPlaceRequest.newInstance(id,nameField);
         try {
+            Timber.d("Getting name of place %s", id);
             return Tasks.await(placesClient.fetchPlace(request)).getPlace().getName();
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
@@ -115,6 +120,7 @@ public class PlaceServiceGoogle implements IPlaceService {
                 .setMaxHeight(400)
                 .build();
         try {
+            Timber.d("Getting photos");
             return Tasks.await(placesClient.fetchPhoto(photoRequest)).getBitmap();
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();

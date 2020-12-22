@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Capstone</string>
+    <string name="title_activity_maps">Mapa</string>
+    <string name="permission_reason">Esta aplicación necesita los permisos de geolocalización para mostrar los lugares que se encuentran cerca de ti</string>
+    <string name="permission_dialog_title">Permisos de geolocalización</string>
+    <string name="ok">Aceptar</string>
+    <string name="cancel">Cancelar</string>
+    <string name="home">Principal</string>
+    <string name="my_routes">Mis rutas</string>
+    <string name="my_places">Mis lugares</string>
+    <string name="add_route">Agregar a ruta</string>
+    <string name="no_routes">No hay rutas</string>
+    <string name="route_name">Nombre de ruta</string>
+    <string name="attribution">Atribución de Google</string>
+    <string name="address">Dirección:</string>
+    <string name="mock_detail_name">Mexico City Metropolitan Cathedral</string>
+    <string name="mock_address">Plaza de la Constitución S/N, Centro Histórico de la Cdad. de México, Centro, Cuauhtémoc, 06000 Ciudad de México, CDMX, Mexico,</string>
+    <string name="add">Agregar a ruta</string>
+    <string name="phone">Teléfono:</string>
+    <string name="mock_phone">5533441122</string>
+    <string name="click_info">Presione aquí para más información</string>
+    <string name="detail">Detalle</string>
+    <string name="add_place">El lugar fue agregado a la ruta</string>
+    <string name="success">Éxito</string>
+    <string name="title_activity_route">RouteActivity</string>
+    <string name="photo_detail">Foto</string>
+    <string name="content_description_widget">Nombre de la ruta</string>
+    <string name="title_widget">Rutas</string>
+    <string name="note">La aplicación borrará los datos cada 30 minutos(tiempo de prueba) debido a políticas de Google</string>
+</resources>

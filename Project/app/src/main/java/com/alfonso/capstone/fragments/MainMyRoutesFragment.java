@@ -18,6 +18,8 @@ import com.alfonso.capstone.viewmodel.RouteViewModel;
 import com.alfonso.capstone.viewmodel.SharedRouteViewModel;
 import com.alfonso.capstone.viewmodel.factory.ViewModelRepositoryFactory;
 
+import timber.log.Timber;
+
 public class MainMyRoutesFragment extends Fragment {
 
     private SharedRouteViewModel sharedRouteViewModel;
@@ -29,17 +31,19 @@ public class MainMyRoutesFragment extends Fragment {
         sharedRouteViewModel = new ViewModelProvider(requireActivity()).get(SharedRouteViewModel.class);
         View view = inflater.inflate(R.layout.fragment_main_my_routes, container, false);
         sharedRouteViewModel.getRouteId().observe(this,id -> {
-            Log.d("MAINROYTES","Make navigation");
+            Timber.d("Navigating to " + id + sharedRouteViewModel.getName().getValue());
             if(id > 0) {
                 if(view.findViewById(R.id.route_detail) == null) {
                     Intent intent = new Intent(requireActivity(), RouteActivity.class);
                     intent.putExtra(RouteActivity.NAME_ROUTE,sharedRouteViewModel.getName().getValue());
                     intent.putExtra(RouteActivity.ID_ROUTE,sharedRouteViewModel.getRouteId().getValue());
                     startActivity(intent);
+                    Timber.d("Starting activity");
                 } else  {
                     RouteViewModel viewModelShowRoute = new ViewModelProvider(requireActivity(),new ViewModelRepositoryFactory<RouteViewModel>(((CapstoneApplication)requireActivity().getApplication()).repository)).get(RouteViewModel.class);
                     viewModelShowRoute.setIdRoute(id);
                 }
+                sharedRouteViewModel.selectRoute(-1L,"");
             }
         });
         return view;
@@ -49,5 +53,6 @@ public class MainMyRoutesFragment extends Fragment {
     public void onPause() {
         super.onPause();
         sharedRouteViewModel.selectRoute(-1L,"");
+        Timber.d("Setting id to %s", sharedRouteViewModel.getRouteId().getValue());
     }
 }
