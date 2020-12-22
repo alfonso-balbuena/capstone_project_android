@@ -54,7 +54,7 @@ public class MapsActivity extends AppCompatActivity {
     }
 
     public void initWorkCleanUp() {
-        PeriodicWorkRequest cleanWorkRequest = new PeriodicWorkRequest.Builder(ClearDataBaseWorker.class,5, TimeUnit.MINUTES).addTag(TAG_WORKER).build();
+        PeriodicWorkRequest cleanWorkRequest = new PeriodicWorkRequest.Builder(ClearDataBaseWorker.class,30, TimeUnit.MINUTES).addTag(TAG_WORKER).build();
         WorkManager.getInstance(this).enqueueUniquePeriodicWork(TAG_WORKER, ExistingPeriodicWorkPolicy.KEEP,cleanWorkRequest);
     }
 

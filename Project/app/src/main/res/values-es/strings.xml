@@ -27,4 +27,5 @@
     <string name="photo_detail">Foto</string>
     <string name="content_description_widget">Nombre de la ruta</string>
     <string name="title_widget">Rutas</string>
+    <string name="note">La aplicación borrará los datos cada 30 minutos(tiempo de prueba) debido a políticas de Google</string>
 </resources>
