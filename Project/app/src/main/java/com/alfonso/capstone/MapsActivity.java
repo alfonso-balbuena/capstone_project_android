@@ -37,6 +37,7 @@ public class MapsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityMapsBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
+        setSupportActionBar(binding.myToolbar);
         setContentView(view);
         initMaps();
         binding.bottomNavigation.setOnNavigationItemSelectedListener(item -> {
@@ -54,7 +55,7 @@ public class MapsActivity extends AppCompatActivity {
     }
 
     public void initWorkCleanUp() {
-        PeriodicWorkRequest cleanWorkRequest = new PeriodicWorkRequest.Builder(ClearDataBaseWorker.class,1, TimeUnit.HOURS).addTag(TAG_WORKER).build();
+        PeriodicWorkRequest cleanWorkRequest = new PeriodicWorkRequest.Builder(ClearDataBaseWorker.class,30, TimeUnit.MINUTES).addTag(TAG_WORKER).build();
         WorkManager.getInstance(this).enqueueUniquePeriodicWork(TAG_WORKER, ExistingPeriodicWorkPolicy.KEEP,cleanWorkRequest);
     }
 
