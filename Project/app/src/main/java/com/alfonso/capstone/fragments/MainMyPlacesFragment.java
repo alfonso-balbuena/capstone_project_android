@@ -19,22 +19,31 @@ import com.alfonso.capstone.viewmodel.factory.ViewModelRepositoryFactory;
 
 public class MainMyPlacesFragment extends Fragment {
 
+    private SharePlaceViewModel sharePlaceViewModel;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main_my_places, container, false);
-        SharePlaceViewModel sharePlaceViewModel = new ViewModelProvider(requireActivity()).get(SharePlaceViewModel.class);
+        sharePlaceViewModel = new ViewModelProvider(requireActivity()).get(SharePlaceViewModel.class);
         sharePlaceViewModel.getPlaceId().observe(this,id -> {
-            if(view.findViewById(R.id.place_detail) == null) {
-                Intent intent = new Intent(requireActivity(), DetailPlace.class);
-                intent.putExtra(DetailPlace.PLACE_ID,id);
-                startActivity(intent);
-            } else {
-                DetailPlaceViewModel detailPlaceViewModel = new ViewModelProvider(requireActivity(),new ViewModelRepositoryFactory<DetailPlaceViewModel>(((CapstoneApplication)requireActivity().getApplication()).repository)).get(DetailPlaceViewModel.class);
-                detailPlaceViewModel.setIdPlace(id);
+            if(!id.isEmpty()) {
+                if(view.findViewById(R.id.place_detail) == null) {
+                    Intent intent = new Intent(requireActivity(), DetailPlace.class);
+                    intent.putExtra(DetailPlace.PLACE_ID,id);
+                    startActivity(intent);
+                } else {
+                    DetailPlaceViewModel detailPlaceViewModel = new ViewModelProvider(requireActivity(),new ViewModelRepositoryFactory<DetailPlaceViewModel>(((CapstoneApplication)requireActivity().getApplication()).repository)).get(DetailPlaceViewModel.class);
+                    detailPlaceViewModel.setIdPlace(id);
+                }
             }
         });
         return view;
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        sharePlaceViewModel.setPlaceId("");
     }
 }
