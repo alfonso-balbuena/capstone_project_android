@@ -29,6 +29,18 @@ android {
     viewBinding {
         enabled = true
     }
+
+    flavorDimensions "version"
+    productFlavors {
+        free {
+            dimension "version"
+            applicationId "com.alfonso.capstone.free"
+        }
+        paid {
+            dimension "version"
+            applicationId "com.alfonso.capstone.paid"
+        }
+    }
 }
 
 dependencies {
