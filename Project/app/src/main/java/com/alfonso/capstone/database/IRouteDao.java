@@ -1,5 +1,7 @@
 package com.alfonso.capstone.database;
 
+import android.database.Cursor;
+
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
@@ -21,5 +23,8 @@ public interface IRouteDao {
 
     @Query("SELECT * FROM Route")
     LiveData<List<Route>> getAllRoutesLiveData();
+
+    @Query("SELECT * FROM Route")
+    Cursor getRoutes();
 
 }

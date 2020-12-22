@@ -9,6 +9,7 @@ import com.alfonso.capstone.model.RoutePlaceCrossRef;
 
 @Database(entities = {PlaceCapstone.class, Route.class, RoutePlaceCrossRef.class},version = 1,exportSchema = false)
 public abstract class RoutesDataBase extends RoomDatabase {
+    public static final String DATABASE_NAME = "database-routes";
     public abstract IPlaceDao placeDao();
     public abstract IRouteDao routeDao();
     public abstract IRoutesPlacesDao placesRoutesDao();

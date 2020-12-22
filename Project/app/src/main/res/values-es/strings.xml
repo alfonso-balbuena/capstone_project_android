@@ -25,4 +25,6 @@
     <string name="success">Éxito</string>
     <string name="title_activity_route">RouteActivity</string>
     <string name="photo_detail">Foto</string>
+    <string name="content_description_widget">Nombre de la ruta</string>
+    <string name="title_widget">Rutas</string>
 </resources>

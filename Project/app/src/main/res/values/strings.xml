@@ -24,4 +24,6 @@
     <string name="success">Success</string>
     <string name="title_activity_route">RouteActivity</string>
     <string name="photo_detail">Photo</string>
+    <string name="content_description_widget">Route name</string>
+    <string name="title_widget">Routes</string>
 </resources>
