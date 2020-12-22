@@ -63,10 +63,9 @@ public class Repository implements IRepository {
         dataBase.placeDao().getAllPlacesLiveData().observe(owner, placeCapstones -> {
             executor.execute(() -> {
                 placeCapstones.forEach(place ->  {
-                    placeService.getNamePlace(place.getId(), place::setName);
+                    place.setName(placeService.getNamePlace(place.getId()));
                     data.add(place);
                 });
-                executor.sleep();
                 places.postValue(data);
             });
         });
@@ -107,11 +106,9 @@ public class Repository implements IRepository {
         executor.execute(() -> {
             RouteWithPlaces routeWithPlaces = dataBase.placesRoutesDao().getRouteWithPlaceLiveData(idRoute);
             routeWithPlaces.getPlaces().forEach(pc -> {
-                placeService.getNamePlace(pc.getId(),pc::setName);
+                pc.setName(placeService.getNamePlace(pc.getId()));
             });
-            executor.sleep();
             route.postValue(routeWithPlaces);
-
         });
         return route;
     }

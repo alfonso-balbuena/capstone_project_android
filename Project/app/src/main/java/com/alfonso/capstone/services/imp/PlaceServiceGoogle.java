@@ -13,6 +13,7 @@ import com.alfonso.capstone.model.PlaceCapstone;
 import com.alfonso.capstone.services.CallbackName;
 import com.alfonso.capstone.services.IPlaceService;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.api.net.FetchPlaceRequest;
@@ -24,6 +25,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 public class PlaceServiceGoogle implements IPlaceService {
@@ -90,11 +92,17 @@ public class PlaceServiceGoogle implements IPlaceService {
     }
 
     @Override
-    public void getNamePlace(String id, CallbackName callbackName) {
+    public String getNamePlace(String id) {
         List<Place.Field> nameField = Collections.singletonList(Place.Field.NAME);
         FetchPlaceRequest request = FetchPlaceRequest.newInstance(id,nameField);
-        placesClient.fetchPlace(request).addOnSuccessListener(fetchPlaceResponse -> {
+        try {
+            return Tasks.await(placesClient.fetchPlace(request)).getPlace().getName();
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
+        return "";
+        /*placesClient.fetchPlace(request).addOnSuccessListener(fetchPlaceResponse -> {
            callbackName.getName(fetchPlaceResponse.getPlace().getName());
-        });
+        });*/
     }
 }
