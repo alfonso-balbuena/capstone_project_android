@@ -1,11 +1,11 @@
 package com.alfonso.capstone.repository.imp;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.room.RoomDatabase;
 
 import com.alfonso.capstone.database.RoutesDataBase;
 import com.alfonso.capstone.model.PlaceCapstone;
@@ -16,7 +16,6 @@ import com.alfonso.capstone.repository.IRepository;
 import com.alfonso.capstone.services.IPlaceService;
 import com.google.android.libraries.places.api.model.PhotoMetadata;
 
-import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -34,20 +33,11 @@ public class Repository implements IRepository {
     }
 
     public static class ThreadTaskExecutor implements Executor {
-        private Thread currentThread;
 
         @Override
         public void execute(Runnable runnable) {
-            currentThread = new Thread(runnable);
+            Thread currentThread = new Thread(runnable);
             currentThread.start();
-        }
-
-        public void sleep() {
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
         }
     }
 
