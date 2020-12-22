@@ -53,7 +53,7 @@ public class MapsLocationFragment extends Fragment {
     private final int CODE_RESULT_PERMISSION = 1;
     private FusedLocationProviderClient locationProviderClient;
     private LocationRequest locationRequest;
-    private final long UPDATE_INTERVAL = 120000;
+    private final long UPDATE_INTERVAL = 60000; // A minute
     private LocationCallback locationCallback;
     private boolean requestingLocationUpdates;
 
