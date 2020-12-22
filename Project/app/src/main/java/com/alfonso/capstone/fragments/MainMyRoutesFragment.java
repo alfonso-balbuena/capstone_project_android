@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,20 +25,29 @@ public class MainMyRoutesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         sharedRouteViewModel = new ViewModelProvider(requireActivity()).get(SharedRouteViewModel.class);
         View view = inflater.inflate(R.layout.fragment_main_my_routes, container, false);
         sharedRouteViewModel.getRouteId().observe(this,id -> {
-            if(view.findViewById(R.id.route_detail) == null) {
-                Intent intent = new Intent(requireActivity(), RouteActivity.class);
-                intent.putExtra(RouteActivity.NAME_ROUTE,sharedRouteViewModel.getName().getValue());
-                intent.putExtra(RouteActivity.ID_ROUTE,sharedRouteViewModel.getRouteId().getValue());
-                startActivity(intent);
-            } else  {
-                RouteViewModel viewModelShowRoute = new ViewModelProvider(requireActivity(),new ViewModelRepositoryFactory<RouteViewModel>(((CapstoneApplication)requireActivity().getApplication()).repository)).get(RouteViewModel.class);
-                viewModelShowRoute.setIdRoute(id);
+            Log.d("MAINROYTES","Make navigation");
+            if(id > 0) {
+                if(view.findViewById(R.id.route_detail) == null) {
+                    Intent intent = new Intent(requireActivity(), RouteActivity.class);
+                    intent.putExtra(RouteActivity.NAME_ROUTE,sharedRouteViewModel.getName().getValue());
+                    intent.putExtra(RouteActivity.ID_ROUTE,sharedRouteViewModel.getRouteId().getValue());
+                    startActivity(intent);
+                } else  {
+                    RouteViewModel viewModelShowRoute = new ViewModelProvider(requireActivity(),new ViewModelRepositoryFactory<RouteViewModel>(((CapstoneApplication)requireActivity().getApplication()).repository)).get(RouteViewModel.class);
+                    viewModelShowRoute.setIdRoute(id);
+                }
             }
         });
         return view;
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        sharedRouteViewModel.selectRoute(-1L,"");
     }
 }

@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,6 +50,7 @@ public class MyRoutesFragment extends Fragment implements AddRouteFragment.AddRo
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         binding.rvRoutes.setLayoutManager(layoutManager);
         adapter = new GenericAdapter<>(model -> {
+            Log.d("MYROUTES","Click " + model.getName());
             sharedRouteViewModel.selectRoute(model.getIdRoute(),model.getName());
         });
         binding.rvRoutes.setAdapter(adapter);
