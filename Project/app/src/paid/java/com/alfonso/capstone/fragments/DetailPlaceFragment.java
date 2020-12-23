@@ -28,6 +28,9 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.squareup.picasso.Picasso;
+
+import timber.log.Timber;
 
 public class DetailPlaceFragment extends Fragment implements OnMapReadyCallback, AdapterView.OnItemSelectedListener {
 
@@ -84,13 +87,12 @@ public class DetailPlaceFragment extends Fragment implements OnMapReadyCallback,
                 binding.phoneDetail.setText(placeCapstone.getPhone());
                 binding.ratingPlaceDetail.setRating(placeCapstone.getRating().floatValue());
                 binding.addresDetail.setText(placeCapstone.getAddress());
-                viewModel.getPhotos(placeCapstone.getPhotoMetadataList()).observe(this, bitmaps -> {
-                    if(bitmaps.size() > 0) {
-                        binding.photoPlace.setScaleType(ImageView.ScaleType.FIT_XY);
-                        binding.photoPlace.setImageBitmap(bitmaps.get(0));
-                        binding.attributionPhoto.setText(placeCapstone.getPhotoMetadataList().get(0).getAttributions());
-                    }
-                });
+                if(placeCapstone.getImage() != null && !placeCapstone.getImage().isEmpty()) {
+                    Timber.d("Getting the image " + placeCapstone.getImage());
+                    Picasso.get().setIndicatorsEnabled(true);
+                    Picasso.get().setLoggingEnabled(true);
+                    Picasso.get().load(placeCapstone.getImage()).into(binding.photoPlace);
+                }
 
                 placeDetail = placeCapstone;
 

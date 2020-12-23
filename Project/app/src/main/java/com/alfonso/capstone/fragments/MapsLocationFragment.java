@@ -45,6 +45,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.List;
 
+import timber.log.Timber;
+
 public class MapsLocationFragment extends Fragment {
 
     private GoogleMap map_;
@@ -53,7 +55,7 @@ public class MapsLocationFragment extends Fragment {
     private final int CODE_RESULT_PERMISSION = 1;
     private FusedLocationProviderClient locationProviderClient;
     private LocationRequest locationRequest;
-    private final long UPDATE_INTERVAL = 60000; // A minute
+    private final long UPDATE_INTERVAL = 120000; // A minute
     private LocationCallback locationCallback;
     private boolean requestingLocationUpdates;
 
@@ -89,7 +91,9 @@ public class MapsLocationFragment extends Fragment {
 
     private void addMarkers(List<PlaceCapstone> places) {
         places.forEach(placeCapstone -> {
-            map_.addMarker(new MarkerOptions().position(new LatLng(placeCapstone.getLatitude(), placeCapstone.getLongitude())).title(placeCapstone.getName()).snippet(getString(R.string.click_info))).setTag(placeCapstone.getId());
+            if(placeCapstone.getName() != null && !placeCapstone.getName().trim().isEmpty()) {
+                map_.addMarker(new MarkerOptions().position(new LatLng(placeCapstone.getLatitude(), placeCapstone.getLongitude())).title(placeCapstone.getName()).snippet(getString(R.string.click_info))).setTag(placeCapstone.getId());
+            }
         });
     }
 

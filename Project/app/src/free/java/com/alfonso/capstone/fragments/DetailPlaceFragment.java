@@ -80,7 +80,9 @@ public class DetailPlaceFragment extends Fragment implements OnMapReadyCallback,
         viewModel.getIdPlace().observe(this,idPlace -> {
             viewModel.getPlace(idPlace).observe(this, placeCapstone -> {
                 binding.detailName.setText(placeCapstone.getName());
-                binding.phoneDetail.setText(placeCapstone.getPhone());
+                if(placeCapstone.getWebsite() != null){
+                    binding.websiteDetail.setText(placeCapstone.getWebsite().toString());
+                }
                 binding.ratingPlaceDetail.setRating(placeCapstone.getRating().floatValue());
                 binding.addresDetail.setText(placeCapstone.getAddress());
                 placeDetail = placeCapstone;

@@ -23,7 +23,7 @@ public class PlaceCapstone {
     private double latitude;
     @ColumnInfo(name = "longitude")
     private double longitude;
-    @Ignore
+    @ColumnInfo(name = "name")
     private String name;
     @Ignore
     private String address;
@@ -35,6 +35,8 @@ public class PlaceCapstone {
     private Uri website;
     @Ignore
     private List<PhotoMetadata> photoMetadataList;
+    @Ignore
+    private String image = "";
 
 
     public PlaceCapstone() {
@@ -78,6 +80,13 @@ public class PlaceCapstone {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void setRating(String rating) {
+        double aux = 0D;
+        if(rating.contains("h"))
+            aux += .5;
+        this.rating = Double.parseDouble(rating.substring(0,1)) + aux;
     }
 
     @NonNull
@@ -125,5 +134,13 @@ public class PlaceCapstone {
 
     public void setPhotoMetadataList(List<PhotoMetadata> photoMetadataList) {
         this.photoMetadataList = photoMetadataList;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }

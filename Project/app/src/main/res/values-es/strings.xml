@@ -29,4 +29,5 @@
     <string name="title_widget">Rutas</string>
     <string name="note">La aplicación borrará los datos cada 30 minutos(tiempo de prueba) debido a políticas de Google</string>
     <string name="note_notification">La aplicación borró los datos en la base de datos debido a políticas de Google</string>
+    <string name="website">Sitio web</string>
 </resources>

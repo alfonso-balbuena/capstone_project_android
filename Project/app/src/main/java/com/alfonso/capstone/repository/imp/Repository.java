@@ -25,8 +25,8 @@ import timber.log.Timber;
 
 public class Repository implements IRepository {
 
-    private final RoutesDataBase dataBase;
-    private final IPlaceService placeService;
+    protected final RoutesDataBase dataBase;
+    protected final IPlaceService placeService;
 
 
     public Repository(RoutesDataBase dataBase, IPlaceService placeService) {

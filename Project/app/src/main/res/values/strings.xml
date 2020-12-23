@@ -27,5 +27,6 @@
     <string name="content_description_widget">Route name</string>
     <string name="title_widget">Routes</string>
     <string name="note">The application will delete the data every 30 minutes(Test time) due to a policy in Google</string>
+    <string name="website">Website</string>
     <string name="note_notification">The application deleted the data in the database due to a policy in Google</string>
 </resources>
